@@ -17,13 +17,15 @@ import {Text} from '../Text/Text';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 
 export enum MB_SCHEME {
-  main,
+  small = 'small',
+  medium = 'medium',
+  large = 'large',
 }
 
 export enum BUTTON_SIZE {
-  small,
-  medium,
-  large,
+  small = 'small',
+  medium = 'medium',
+  large = 'large',
 }
 
 type PropType = ComponentProps<typeof MaterialCommunityIcons>['name'];
@@ -49,8 +51,8 @@ export const Button = ({
   onPress,
   style,
   type = 'text',
-  scheme = MB_SCHEME.main,
-  sizeScheme = BUTTON_SIZE.small,
+  scheme = MB_SCHEME.medium,
+  sizeScheme = BUTTON_SIZE.medium,
   iconColor = colors.primary,
   iconName = 'home',
   iconSize,
@@ -61,7 +63,7 @@ export const Button = ({
 
   const contentType =
     type === 'text' ? (
-      <Text text style={[titleStyle[scheme], textStyle]}>
+      <Text title style={[s.text, textStyle]}>
         {title}
       </Text>
     ) : (
@@ -87,7 +89,6 @@ export const Button = ({
         s.main,
         {opacity: pressed ? 0.5 : 1},
         buttonSizeStyle[sizeScheme],
-        buttonStyle[scheme][disabledStyle],
         style,
       ]}
       {...touchableProps}>
@@ -101,11 +102,14 @@ const s = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'center',
     borderRadius: Theme.sizes.r4,
-    backgroundColor: colors.inverseBlack40,
+    backgroundColor: colors.primary,
   },
   loaderWrapper: {
     height: 24,
     justifyContent: 'center',
+  },
+  text: {
+    color: Theme.colors.light.inverseWhite100,
   },
 });
 
@@ -116,6 +120,7 @@ const buttonSizeStyle = {
   },
   [BUTTON_SIZE.medium]: {
     width: 150,
+    height: 50,
   },
   [BUTTON_SIZE.large]: {
     paddingVertical: Theme.sizes.v5,
@@ -124,18 +129,12 @@ const buttonSizeStyle = {
 };
 
 const buttonStyle = {
-  [MB_SCHEME.main]: {
+  [MB_SCHEME.medium]: {
     enabled: {
       borderRadius: Theme.sizes.r4,
     },
     disabled: {
       borderRadius: Theme.sizes.r4,
     },
-  },
-};
-
-const titleStyle = {
-  [MB_SCHEME.main]: {
-    color: colors.primary,
   },
 };

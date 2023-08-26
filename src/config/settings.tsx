@@ -7,9 +7,8 @@ const namespace = 'basalt';
 
 const devSettings = {
   namespace,
-  carApi: 'http://api.carsxe.com',
-  carApiKey: 'z06wfb44x_gwme38v13_dr7023njo',
-  favouriteId: `${namespace}favourite-car`,
+  marketApi: 'http://api.marketstack.com/v1',
+  ApiKey: '7b0d9b543cbf7a23428925ca97b530f6',
 };
 
 const prodSettings = {
