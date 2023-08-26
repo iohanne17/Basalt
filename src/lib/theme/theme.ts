@@ -1,11 +1,11 @@
-import { Dimensions, Platform } from "react-native"
-import { initialWindowMetrics } from "react-native-safe-area-context"
-import { colors, darkColors } from "./colors"
+import {Dimensions, Platform} from 'react-native';
+import {initialWindowMetrics} from 'react-native-safe-area-context';
+import {colors, darkColors} from './colors';
 
-const windowSize = Dimensions.get("window")
+const windowSize = Dimensions.get('window');
 
-export const SCREEN_WIDTH = windowSize.width
-export const SCREEN_HEIGHT = windowSize.height
+export const SCREEN_WIDTH = windowSize.width;
+export const SCREEN_HEIGHT = windowSize.height;
 
 class ThemeClass {
   sizes = {
@@ -14,6 +14,9 @@ class ThemeClass {
       ios: Math.max(initialWindowMetrics?.insets?.bottom || 20),
       default: 20,
     }),
+
+    bigCircleHeight: 50,
+    bigCircleWidth: 50,
 
     //icon sizes
     icon1: 16,
@@ -40,19 +43,24 @@ class ThemeClass {
     vmin1: 1,
     vmin3: 3,
     vmin: 4,
-  }
+  };
 
   elevation = {
     el1: 2,
     el2: 4,
     el3: 8,
     el4: 16,
-  }
+  };
 
   colors = {
     light: colors,
     dark: darkColors,
-  }
+  };
+
+  paddings = {
+    h16: 16,
+    v16: 16,
+  };
 }
 
-export const Theme = new ThemeClass()
+export const Theme = new ThemeClass();

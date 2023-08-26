@@ -1,10 +1,15 @@
 import {createApi, fetchBaseQuery} from '@reduxjs/toolkit/query/react';
 import Settings from '@Config/settings';
+import {StockInfo} from '@Screens/stockDetail';
 
 interface objInput {
   symbol: string;
   date_from: string;
   date_to: string;
+}
+
+interface IStockDetail {
+  data: StockInfo[];
 }
 
 export const stockListDetailSliceApi = createApi({
@@ -16,13 +21,13 @@ export const stockListDetailSliceApi = createApi({
     },
   }),
   endpoints: build => ({
-    getStockListDetail: build.query<void, unknown>({
+    getStockListDetail: build.query<IStockDetail, any>({
       query: (symbol: string) =>
-        `/tickers/${symbol}?access_key=${Settings.ApiKey}`,
+        `/eod?access_key=${Settings.ApiKey}&symbols=${symbol}`,
     }),
-    fetchDetailUsingRange: build.query<void, unknown>({
+    fetchDetailUsingRange: build.query<unknown, unknown>({
       query: (obj: objInput) =>
-        `/eod/${obj.symbol}?access_key=${Settings.ApiKey}&date_from=${obj.date_from}&date_to=${obj.date_to}`,
+        `/eod?access_key=${Settings.ApiKey}&symbols=${obj.symbol}&date_from=${obj.date_from}&date_to=${obj.date_to}`,
     }),
   }),
 });

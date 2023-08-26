@@ -1,5 +1,10 @@
 import {createApi, fetchBaseQuery} from '@reduxjs/toolkit/query/react';
 import Settings from '@Config/settings';
+import {IRenderItemProps} from '@Screens/home';
+
+interface IStockListResponse {
+  data: IRenderItemProps[];
+}
 
 export const stockListSliceApi = createApi({
   reducerPath: 'stock-list-api',
@@ -10,10 +15,10 @@ export const stockListSliceApi = createApi({
     },
   }),
   endpoints: build => ({
-    fetchStockList: build.query<void, unknown>({
+    fetchStockList: build.query<IStockListResponse, any>({
       query: () => `/tickers?access_key=${Settings.ApiKey}&limit=10`,
     }),
-    searchStockList: build.query<void, unknown>({
+    searchStockList: build.query<any, any>({
       query: (symbol: string) =>
         `/tickers?access_key=${Settings.ApiKey}&limit=10&search=${symbol}`,
     }),
