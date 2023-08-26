@@ -19,6 +19,7 @@ export const colors = {
   inverseBlack20: '#00000033',
   inverseBlack10: '#0000001A',
   offwhite: '#FAF9F6',
+  searchBar: '#f0f0f0',
 
   shadowButton: Platform.select({
     ios: {

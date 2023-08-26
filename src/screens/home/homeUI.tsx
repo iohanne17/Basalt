@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useCallback, useState} from 'react';
 import {
   FlatList,
   ListRenderItem,
@@ -14,6 +14,7 @@ import {
   Spacer,
   Text,
 } from '@Components/index';
+import SearchBar from '@Components/searchBar';
 import {useStockList} from '@Hooks/stocklist';
 import {Theme} from '@Theme/theme';
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
@@ -46,9 +47,10 @@ type HomeScreenProps = NativeStackScreenProps<
 >;
 
 export const Home = ({navigation: {navigate}}: HomeScreenProps) => {
-  const {isLoading, isFetching, isError, data, refetch} = useStockList();
+  const {isLoading, isFetching, data, isError, refetch, search} =
+    useStockList();
 
-  if ((isLoading || isFetching) && !data) {
+  if (isLoading || isFetching) {
     return <Loading />;
   }
 
@@ -107,8 +109,6 @@ export const Home = ({navigation: {navigate}}: HomeScreenProps) => {
     );
   };
 
-  const response = data?.data;
-
   return (
     <HeaderLayout
       headerTitle={'My WatchList'}
@@ -116,8 +116,10 @@ export const Home = ({navigation: {navigate}}: HomeScreenProps) => {
       showArrow={false}
       innerStyle={s.container}>
       <Spacer height={20} />
+      <SearchBar onSearch={search} onCancel={refetch} />
       <FlatList
-        data={response}
+        showsVerticalScrollIndicator={false}
+        data={data}
         renderItem={renderItem}
         keyExtractor={(item, index) => `${item.symbol}${index}`}
         ItemSeparatorComponent={ListItemSeparator}

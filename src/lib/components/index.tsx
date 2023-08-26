@@ -7,3 +7,4 @@ export * from './error';
 export * from './network';
 export * from './ListItemSeparator/ListItemSeparator';
 export * from './row';
+export * from './searchBar';

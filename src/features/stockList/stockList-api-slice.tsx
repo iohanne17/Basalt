@@ -18,12 +18,15 @@ export const stockListSliceApi = createApi({
     fetchStockList: build.query<IStockListResponse, any>({
       query: () => `/tickers?access_key=${Settings.ApiKey}&limit=10`,
     }),
-    searchStockList: build.query<any, any>({
+    searchStockList: build.query<IStockListResponse, any>({
       query: (symbol: string) =>
         `/tickers?access_key=${Settings.ApiKey}&limit=10&search=${symbol}`,
     }),
   }),
 });
 
-export const {useFetchStockListQuery, useLazySearchStockListQuery} =
-  stockListSliceApi;
+export const {
+  useFetchStockListQuery,
+  useLazySearchStockListQuery,
+  useLazyFetchStockListQuery,
+} = stockListSliceApi;

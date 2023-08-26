@@ -1,19 +1,61 @@
 import {
   useFetchStockListQuery,
+  useLazyFetchStockListQuery,
   useLazySearchStockListQuery,
 } from '@Features/stockList/stockList-api-slice';
+import {IRenderItemProps} from '@Screens/home';
+import {useEffect, useState} from 'react';
 
 export const useStockList = () => {
-  const {isLoading, isFetching, isError, data, refetch} =
-    useFetchStockListQuery({});
+  const [stocks, setData] = useState<IRenderItemProps[] | undefined>([]);
+  const [trigger, {isLoading, isFetching, isError, isSuccess, data}] =
+    useLazyFetchStockListQuery();
+  const {searchTrigger, apiResponse} = useLazyStockList();
+
+  const refetch = async () => {
+    try {
+      await trigger({});
+      if (isSuccess) {
+        setData(data?.data);
+      }
+    } catch (error) {
+      throw new Error('Failed to fetch');
+    }
+  };
+
+  const findStock = async (val: string) => {
+    try {
+      await searchTrigger(val);
+      if (apiResponse.isSuccess) {
+        setData(apiResponse?.data?.data);
+      }
+    } catch (error) {
+      throw new Error('Failed to fetch');
+    }
+  };
+
+  useEffect(() => {
+    refetch();
+  }, [isLoading, apiResponse.isSuccess]);
 
   return {
-    isFetching,
+    isFetching: isFetching,
     isError,
-    isLoading,
+    isLoading: isLoading,
+    data: stocks,
     refetch,
-    data,
+    search: findStock,
   };
 };
 
-export default useStockList;
+export const useLazyStockList = () => {
+  const [searchTrigger, apiResponse] = useLazySearchStockListQuery();
+
+  return {
+    isFetching: apiResponse.isFetching,
+    isLoading: apiResponse.isLoading,
+    data: apiResponse.data,
+    searchTrigger,
+    apiResponse,
+  };
+};
