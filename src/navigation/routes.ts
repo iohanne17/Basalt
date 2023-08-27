@@ -1,14 +1,15 @@
 export enum CoreRoutes {
-  HOME = "HOME",
-  STOCKLIST = "STOCKLIST",
+  HOME = 'HOME',
+  STOCKLIST = 'STOCKLIST',
 }
 
 export enum DetailRoutes {
-  STOCKDETAIL = "STOCKDETAIL",
+  STOCKDETAIL = 'STOCKDETAIL',
 }
 
 export enum NetworkRoutes {
-  NETWORKINFO = "NETWORKINFO",
+  NETWORKINFO = 'NETWORKINFO',
+  LOADING = 'LOADING',
 }
 
-export type AllRoutes = CoreRoutes | DetailRoutes | NetworkRoutes
+export type AllRoutes = CoreRoutes | DetailRoutes | NetworkRoutes;

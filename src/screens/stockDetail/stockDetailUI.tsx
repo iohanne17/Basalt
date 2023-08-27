@@ -1,6 +1,8 @@
-import React from 'react';
-import {ScrollView, StyleSheet, View} from 'react-native';
+import React, {Fragment, useEffect, useState} from 'react';
+import {Pressable, ScrollView, StyleSheet, View} from 'react-native';
 import {
+  BUTTON_SIZE,
+  Button,
   ErrorScreen,
   HeaderLayout,
   Loading,
@@ -8,12 +10,17 @@ import {
   Spacer,
   Text,
   TextColor,
+  DatePickerComponent,
 } from '@Components/index';
 import {NativeStackScreenProps} from '@react-navigation/native-stack';
 import {DetailRoutes} from 'src/navigation/routes';
 import {DetailRoutesParams} from 'src/navigation/types';
-import useStockListDetail from '@Hooks/stockDetail';
+import {useStockListDetail} from '@Hooks/stockDetail';
 import {Theme} from '@Theme/theme';
+import Ionicons from 'react-native-vector-icons/Ionicons';
+import {colors} from '@Theme/colors';
+import DatePicker from 'react-native-date-picker';
+import {parseISO, format} from 'date-fns';
 
 export type DetailScreenProps = NativeStackScreenProps<
   DetailRoutesParams,
@@ -40,11 +47,37 @@ export interface StockInfo {
 
 export const StockDetail = ({route}: DetailScreenProps) => {
   const {symbol, icon, name} = route?.params;
+  const [stockDetail, setData] = useState<StockInfo[] | undefined>();
+  const [dateFrom, setDateFrom] = useState(new Date());
+  const [dateTo, setDateTo] = useState(new Date());
+  const [filterView, setFilterView] = useState(false);
+  const {
+    isLoading,
+    isFetching,
+    isError,
+    data,
+    refetch,
+    findStockDetail,
+    lazyHandle,
+    apiLazyResponse,
+  } = useStockListDetail(symbol);
 
-  const {isLoading, isFetching, isError, data, refetch} =
-    useStockListDetail(symbol);
+  useEffect(() => {
+    if (lazyHandle && apiLazyResponse?.isSuccess) {
+      setData(apiLazyResponse?.data?.data);
+    } else {
+      setData(data);
+    }
+  }, [
+    isLoading,
+    lazyHandle,
+    isFetching,
+    apiLazyResponse?.isSuccess,
+    apiLazyResponse?.data?.data?.[0]?.adj_close,
+    data?.[0]?.adj_close,
+  ]);
 
-  if (isLoading || isFetching) {
+  if (isLoading) {
     return <Loading />;
   }
 
@@ -53,25 +86,44 @@ export const StockDetail = ({route}: DetailScreenProps) => {
       <ErrorScreen
         title="Data Error"
         message="Error fetching data... Try again later"
-        onPress={refetch}
-        isLoading={isLoading}
       />
     );
   }
 
-  const response = data ? data?.data[0] : undefined;
+  function handleSearch() {
+    if (dateFrom !== new Date())
+      findStockDetail({
+        symbol,
+        date_from: format(parseISO(dateFrom.toISOString()), 'yyyy-MM-dd'),
+        date_to: format(parseISO(dateTo.toISOString()), 'yyyy-MM-dd'),
+      });
+  }
+
+  const headerRight = () => (
+    <Pressable
+      onPress={() => setFilterView(p => !p)}
+      style={{paddingHorizontal: Theme.sizes.h1}}>
+      <Ionicons
+        name={'filter'}
+        size={Theme.sizes.icon3}
+        color={colors.primary}
+      />
+    </Pressable>
+  );
+
+  const response = stockDetail ? stockDetail?.[0] : undefined;
   const entries = response ? Object?.entries(response) : undefined;
   const detailArray = entries
-    ? entries.slice(0, entries.length - 1)
+    ? entries.slice(0, entries.length - 4)
     : undefined;
 
   return (
     <HeaderLayout
       headerTitle={symbol}
       headerShown={true}
+      headerRight={headerRight}
       safeAreaStyle={s.safeAreaStyle}
       innerStyle={s.container}>
-      <Spacer height={20} />
       <View style={s.roundIcon}>
         <Text title_5 color={TextColor.black}>
           {icon}
@@ -82,7 +134,29 @@ export const StockDetail = ({route}: DetailScreenProps) => {
           {name}
         </Text>
       </View>
-      <Spacer height={20} />
+      <Spacer height={10} />
+      {filterView && (
+        <Fragment>
+          <View style={s.row}>
+            <DatePickerComponent
+              title="Start Date"
+              onConfirm={val => setDateFrom(val)}
+            />
+            <DatePickerComponent
+              title="End date"
+              onConfirm={val => setDateTo(val)}
+            />
+          </View>
+          <Button
+            type="text"
+            title="Filter"
+            onPress={handleSearch}
+            style={s.button}
+            sizeScheme={BUTTON_SIZE.small}
+          />
+        </Fragment>
+      )}
+      <Spacer height={filterView ? 10 : 90} />
       <ScrollView contentContainerStyle={s.detailContainer}>
         {!detailArray ? (
           <ErrorScreen
@@ -154,5 +228,17 @@ const s = StyleSheet.create({
     textTransform: 'uppercase',
     textAlign: 'center',
     marginTop: Theme.sizes.bigCircleHeight,
+  },
+  row: {
+    flexDirection: 'row',
+    justifyContent: 'space-evenly',
+  },
+  picker: {
+    paddingHorizontal: Theme.sizes.h1,
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  button: {
+    alignSelf: 'center',
   },
 });

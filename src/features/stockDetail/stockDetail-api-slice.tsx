@@ -25,11 +25,12 @@ export const stockListDetailSliceApi = createApi({
       query: (symbol: string) =>
         `/eod?access_key=${Settings.ApiKey}&symbols=${symbol}`,
     }),
-    fetchDetailUsingRange: build.query<unknown, unknown>({
+    fetchDetailUsingRange: build.query<IStockDetail, any>({
       query: (obj: objInput) =>
         `/eod?access_key=${Settings.ApiKey}&symbols=${obj.symbol}&date_from=${obj.date_from}&date_to=${obj.date_to}`,
     }),
   }),
 });
 
-export const {useGetStockListDetailQuery} = stockListDetailSliceApi;
+export const {useGetStockListDetailQuery, useLazyFetchDetailUsingRangeQuery} =
+  stockListDetailSliceApi;

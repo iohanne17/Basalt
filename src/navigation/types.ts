@@ -12,6 +12,7 @@ export type DetailRoutesParams = {
 
 export type NetworkRoutesParams = {
   [NetworkRoutes.NETWORKINFO]: undefined;
+  [NetworkRoutes.LOADING]: undefined;
 };
 
 export type AllRoutesParams =

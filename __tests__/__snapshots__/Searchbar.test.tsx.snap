@@ -24,7 +24,6 @@ exports[`Renders Searchbar snapshot as expected 1`] = `
         "letterSpacing": 1.5,
       }
     }
-    value=""
   />
 </View>
 `;

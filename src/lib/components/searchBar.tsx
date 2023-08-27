@@ -22,13 +22,13 @@ export const SearchBar: FC<SearchBarProps> = ({
   onCancel,
   ...textInputProps
 }) => {
-  const [query, setQuery] = useState<string>('');
+  const [query, setQuery] = useState<string | undefined>(undefined);
   const searchInput = useDebounce(query, 1000);
 
   useEffect(() => {
     if (searchInput && searchInput.length > 0) {
       onSearch(searchInput);
-    } else {
+    } else if (searchInput && searchInput.length === 0) {
       onCancel?.();
     }
   }, [searchInput]);
@@ -54,7 +54,7 @@ export const SearchBar: FC<SearchBarProps> = ({
         }}
         {...textInputProps}
       />
-      {query.length > 0 && (
+      {query && query?.length > 0 && (
         <TouchableOpacity onPress={onPressCancel}>
           <MaterialIcon
             name="cancel"

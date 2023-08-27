@@ -23,6 +23,7 @@ interface Props {
   showArrow?: boolean;
   alignHeaderTitle?: any;
   safeAreaStyle?: StyleProp<ViewStyle>;
+  headerRight?: () => React.JSX.Element;
 }
 
 export const HeaderLayout: React.FC<Props> = ({
@@ -33,6 +34,7 @@ export const HeaderLayout: React.FC<Props> = ({
   showArrow = true,
   alignHeaderTitle = 'flex-start',
   safeAreaStyle,
+  headerRight = null,
 }) => {
   const navigation = useNavigation();
 
@@ -49,6 +51,7 @@ export const HeaderLayout: React.FC<Props> = ({
   useLayoutEffect(() => {
     navigation.setOptions({
       headerShadowVisible: false,
+      headerBackVisible: false,
       headerShown: headerShown,
       headerStyle: {
         backgroundColor: colors.inverseWhite100,
@@ -75,6 +78,7 @@ export const HeaderLayout: React.FC<Props> = ({
               </Pressable>
             );
           },
+      headerRight: headerRight,
     });
   }, [navigation]);
 
@@ -91,7 +95,7 @@ const s = StyleSheet.create({
     backgroundColor: colors.inverseWhite100,
     paddingTop: Platform.select({
       ios: undefined,
-      default: 50,
+      default: 0,
     }),
   },
   headerTitle: {

@@ -8,3 +8,4 @@ export * from './network';
 export * from './ListItemSeparator/ListItemSeparator';
 export * from './row';
 export * from './searchBar';
+export * from './datePicker';
