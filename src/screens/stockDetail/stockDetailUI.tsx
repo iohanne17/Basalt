@@ -3,19 +3,17 @@ import {ScrollView, StyleSheet, View} from 'react-native';
 import {
   ErrorScreen,
   HeaderLayout,
-  ListItemSeparator,
   Loading,
   Row,
   Spacer,
   Text,
+  TextColor,
 } from '@Components/index';
 import {NativeStackScreenProps} from '@react-navigation/native-stack';
 import {DetailRoutes} from 'src/navigation/routes';
 import {DetailRoutesParams} from 'src/navigation/types';
-import {RouteProp, useRoute} from '@react-navigation/native';
 import useStockListDetail from '@Hooks/stockDetail';
 import {Theme} from '@Theme/theme';
-import FontAwesome from 'react-native-vector-icons/FontAwesome';
 
 export type DetailScreenProps = NativeStackScreenProps<
   DetailRoutesParams,
@@ -75,11 +73,9 @@ export const StockDetail = ({route}: DetailScreenProps) => {
       innerStyle={s.container}>
       <Spacer height={20} />
       <View style={s.roundIcon}>
-        <FontAwesome
-          name={icon}
-          size={Theme.sizes.icon2}
-          color={Theme.colors.light.inverseWhite100}
-        />
+        <Text title_5 color={TextColor.black}>
+          {icon}
+        </Text>
       </View>
       <View style={s.center}>
         <Text text style={s.text}>
@@ -89,9 +85,11 @@ export const StockDetail = ({route}: DetailScreenProps) => {
       <Spacer height={20} />
       <ScrollView contentContainerStyle={s.detailContainer}>
         {!detailArray ? (
-          <Text title style={s.errorText}>
-            Unable to get Data
-          </Text>
+          <ErrorScreen
+            title={'Unable to get data'}
+            message="Try again"
+            showButton={false}
+          />
         ) : (
           detailArray.map((el, index) => {
             let [key, value] = el;

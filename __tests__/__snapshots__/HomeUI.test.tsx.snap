@@ -1,0 +1,29 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Home Component matches snapshot 1`] = `
+<HeaderLayout
+  headerShown={true}
+  headerTitle="My WatchList"
+  innerStyle={
+    Object {
+      "backgroundColor": "#fff",
+      "flex": 1,
+      "paddingHorizontal": 16,
+    }
+  }
+  showArrow={false}
+>
+  <Spacer
+    height={20}
+  />
+  <SearchBar
+    onCancel={[MockFunction]}
+    onSearch={[MockFunction]}
+  />
+  <ErrorScreen
+    message="Try another name"
+    showButton={false}
+    title="Data not available"
+  />
+</HeaderLayout>
+`;

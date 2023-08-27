@@ -13,11 +13,11 @@ import {
   Loading,
   Spacer,
   Text,
+  TextColor,
 } from '@Components/index';
 import SearchBar from '@Components/searchBar';
 import {useStockList} from '@Hooks/stocklist';
 import {Theme} from '@Theme/theme';
-import FontAwesome from 'react-native-vector-icons/FontAwesome';
 import {CoreRoutes, DetailRoutes} from 'src/navigation/routes';
 import {NativeStackScreenProps} from '@react-navigation/native-stack';
 import {CoreRoutesParams} from 'src/navigation/types';
@@ -68,12 +68,13 @@ export const Home = ({navigation: {navigate}}: HomeScreenProps) => {
   }, [
     isLoading,
     lazyHandle,
+    isFetching,
     apiLazyResponse?.isSuccess,
     apiLazyResponse?.data?.data?.[0]?.symbol,
     data?.[0]?.symbol,
   ]);
 
-  if (isLoading || isFetching) {
+  if (isLoading) {
     return <Loading />;
   }
 
@@ -95,28 +96,16 @@ export const Home = ({navigation: {navigate}}: HomeScreenProps) => {
   const renderItem: ListRenderItem<IRenderItemProps> = ({
     item: {symbol, name},
   }) => {
-    const logo = [
-      'amazon',
-      'facebook',
-      'google',
-      'pinterest',
-      'apple',
-      'trademark',
-      'bug',
-    ];
-    const random = Math.floor(Math.random() * logo.length);
-    const icon = logo[random];
+    const icon = symbol.substring(0, 2);
 
     return (
       <Pressable
         style={s.renderItem}
         onPress={() => onPress(symbol, icon, name)}>
         <View style={s.roundIcon}>
-          <FontAwesome
-            name={icon}
-            size={Theme.sizes.icon2}
-            color={Theme.colors.light.inverseWhite100}
-          />
+          <Text title_5 color={TextColor.white}>
+            {icon}
+          </Text>
         </View>
         <Spacer width={Theme.sizes.h4} />
         <View>
@@ -140,13 +129,21 @@ export const Home = ({navigation: {navigate}}: HomeScreenProps) => {
       innerStyle={s.container}>
       <Spacer height={20} />
       <SearchBar onSearch={search} onCancel={refetch} />
-      <FlatList
-        showsVerticalScrollIndicator={false}
-        data={stocks}
-        renderItem={renderItem}
-        keyExtractor={(item, index) => `${item.symbol}${index}`}
-        ItemSeparatorComponent={ListItemSeparator}
-      />
+      {stocks?.length === 0 ? (
+        <ErrorScreen
+          title={'Data not available'}
+          message="Try another name"
+          showButton={false}
+        />
+      ) : (
+        <FlatList
+          showsVerticalScrollIndicator={false}
+          data={stocks}
+          renderItem={renderItem}
+          keyExtractor={(item, index) => `${item.symbol}${index}`}
+          ItemSeparatorComponent={ListItemSeparator}
+        />
+      )}
     </HeaderLayout>
   );
 };
@@ -180,5 +177,8 @@ const s = StyleSheet.create({
   textTitle: {
     color: Theme.colors.dark.inverseWhite100,
     textTransform: 'uppercase',
+  },
+  error: {
+    backgroundColor: 'red',
   },
 });

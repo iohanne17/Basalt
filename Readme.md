@@ -1,6 +1,6 @@
 # BasaltTest App
 
-This is just a sample app, it uses react-navigation for navigation, react-native-vector-icons for icons used withing the app.
+This is just a simple application that displays a list of 10 stock market items using the marketplace API, it also implements a search functionality that users can use to search the marketPlace API. It uses react-navigation for navigation, react-native-vector-icons for icons used withing the app.
 
 ## Install dependencies
 

@@ -1,6 +1,6 @@
 import {Theme} from '@Theme/theme';
-import {debounce} from 'lodash';
-import React, {FC, useCallback, useEffect, useState} from 'react';
+import {useDebounce} from '@Utils/userUtils';
+import React, {FC, useEffect, useState} from 'react';
 import {
   View,
   TextInput,
@@ -18,12 +18,20 @@ interface SearchBarProps extends TextInputProps {
 
 export const SearchBar: FC<SearchBarProps> = ({
   onSearch,
-  debounceTime = 2000,
+  debounceTime = 800,
   onCancel,
   ...textInputProps
 }) => {
   const [query, setQuery] = useState<string>('');
-  const delayedQuery = useCallback(debounce(onSearch, debounceTime), []);
+  const searchInput = useDebounce(query, 1000);
+
+  useEffect(() => {
+    if (searchInput && searchInput.length > 0) {
+      onSearch(searchInput);
+    } else {
+      onCancel?.();
+    }
+  }, [searchInput]);
 
   const onPressCancel = () => {
     handleTextChange?.('');
@@ -32,11 +40,6 @@ export const SearchBar: FC<SearchBarProps> = ({
 
   const handleTextChange = (text: string) => {
     setQuery(text);
-    if (text.length > 0) {
-      delayedQuery(text);
-    } else {
-      onCancel?.();
-    }
   };
 
   return (

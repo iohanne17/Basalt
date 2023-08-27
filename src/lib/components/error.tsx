@@ -8,8 +8,9 @@ import {Button} from './Button/MainButton';
 interface ErrorProps {
   message: string;
   title: string;
-  isLoading: boolean;
-  onPress: () => void;
+  isLoading?: boolean;
+  onPress?: () => void;
+  showButton?: boolean;
 }
 
 export const ErrorScreen = ({
@@ -17,12 +18,20 @@ export const ErrorScreen = ({
   title,
   isLoading,
   onPress,
+  showButton = true,
 }: ErrorProps) => (
   <View style={styles.loadingContainer}>
     <Text title>{title}</Text>
     <Text>{message}</Text>
     <Spacer height={20} />
-    <Button loading={isLoading} onPress={onPress} type="text" title="Retry" />
+    {showButton ? (
+      <Button
+        loading={isLoading}
+        onPress={() => onPress?.()}
+        type="text"
+        title="Retry"
+      />
+    ) : null}
   </View>
 );
 

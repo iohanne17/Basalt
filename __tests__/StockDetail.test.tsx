@@ -41,6 +41,7 @@ jest.mock('@Components/index', () => ({
   Loading: 'Loading',
   Spacer: 'Spacer',
   Text: 'Text',
+  TextColor: 'TextColor',
 }));
 
 describe('Detail Component', () => {
