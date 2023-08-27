@@ -30,3 +30,9 @@ yarn ios
 - `src/config` - Application wide configuration (environment settings and redux store settings)
 - `src/apiHooks` - Application queries and mutations reside in this folder
 - `src/features` - Redux management configuration.
+
+### How to run test
+
+```bash
+yarn test
+```
