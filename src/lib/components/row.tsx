@@ -8,7 +8,7 @@ interface RowProps {
   value: string | number;
 }
 
-export const Row = ({title, value}: RowProps) => {
+const Row = ({title, value}: RowProps) => {
   return (
     <View style={s.row}>
       <Text text style={s.rowTitle}>
@@ -37,4 +37,5 @@ const s = StyleSheet.create({
   },
 });
 
-export default Row;
+Row.displayName = 'Row';
+export {Row};

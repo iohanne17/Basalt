@@ -34,6 +34,8 @@ export const SearchBar: FC<SearchBarProps> = ({
     setQuery(text);
     if (text.length > 0) {
       delayedQuery(text);
+    } else {
+      onCancel?.();
     }
   };
 

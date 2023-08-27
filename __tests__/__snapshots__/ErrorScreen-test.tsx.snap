@@ -1,0 +1,100 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Renders snapshot as expected 1`] = `
+<View
+  style={
+    Object {
+      "alignItems": "center",
+      "backgroundColor": "#FFFFFF",
+      "flex": 1,
+      "justifyContent": "center",
+    }
+  }
+>
+  <Text
+    style={
+      Object {
+        "color": "#FE812A",
+        "fontFamily": "SchibstedGrotesk-Black",
+        "fontSize": 18,
+        "letterSpacing": -0.22,
+        "lineHeight": 20,
+      }
+    }
+    title={true}
+  >
+    Network error
+  </Text>
+  <Text
+    style={
+      Object {
+        "color": "#FE812A",
+        "fontFamily": "SchibstedGrotesk-Medium",
+        "fontSize": 17,
+        "letterSpacing": -0.22,
+        "lineHeight": 24,
+      }
+    }
+  >
+    Try again later
+  </Text>
+  <View
+    style={
+      Array [
+        Object {},
+        Object {
+          "height": 20,
+          "width": undefined,
+        },
+      ]
+    }
+  />
+  <View
+    accessible={true}
+    collapsable={false}
+    focusable={true}
+    onBlur={[Function]}
+    onClick={[Function]}
+    onFocus={[Function]}
+    onResponderGrant={[Function]}
+    onResponderMove={[Function]}
+    onResponderRelease={[Function]}
+    onResponderTerminate={[Function]}
+    onResponderTerminationRequest={[Function]}
+    onStartShouldSetResponder={[Function]}
+    style={
+      Array [
+        Object {
+          "alignItems": "center",
+          "backgroundColor": "#FE812A",
+          "borderRadius": 25,
+          "justifyContent": "center",
+        },
+        Object {
+          "opacity": 1,
+        },
+        Object {
+          "height": 50,
+          "width": 150,
+        },
+        undefined,
+      ]
+    }
+  >
+    <Text
+      style={
+        Object {
+          "color": "#FFFFFF",
+          "fontFamily": "SchibstedGrotesk-Black",
+          "fontSize": 18,
+          "letterSpacing": -0.22,
+          "lineHeight": 20,
+        }
+      }
+      title={true}
+    >
+      Retry
+    </Text>
+  </View>
+</View>
+`;

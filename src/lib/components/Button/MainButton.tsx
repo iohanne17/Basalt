@@ -59,8 +59,6 @@ export const Button = ({
   textStyle,
   ...touchableProps
 }: MainButtonProps) => {
-  const disabledStyle = disabled ? 'disabled' : 'enabled';
-
   const contentType =
     type === 'text' ? (
       <Text title style={[s.text, textStyle]}>

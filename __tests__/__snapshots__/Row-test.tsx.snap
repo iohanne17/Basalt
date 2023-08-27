@@ -1,0 +1,45 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Renders row snapshot as expected 1`] = `
+<View
+  style={
+    Object {
+      "alignItems": "center",
+      "flexDirection": "row",
+      "justifyContent": "space-between",
+      "paddingVertical": 8,
+    }
+  }
+>
+  <Text
+    style={
+      Object {
+        "color": "#FE812A",
+        "fontFamily": "SchibstedGrotesk-Medium",
+        "fontSize": 17,
+        "letterSpacing": -0.22,
+        "lineHeight": 24,
+        "textTransform": "capitalize",
+      }
+    }
+    text={true}
+  >
+    Network error
+  </Text>
+  <Text
+    style={
+      Object {
+        "color": "#000000",
+        "fontFamily": "SchibstedGrotesk-Medium",
+        "fontSize": 17,
+        "letterSpacing": -0.22,
+        "lineHeight": 24,
+        "textTransform": "uppercase",
+      }
+    }
+    text_semibold={true}
+  >
+    Try again later
+  </Text>
+</View>
+`;

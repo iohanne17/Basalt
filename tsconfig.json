@@ -26,7 +26,7 @@
     "isolatedModules": true,
     "noEmit": true,
     "jsx": "react",
-    "types": ["node"],
+    "types": ["jest","node"],
     "downlevelIteration": true,
     "strictNullChecks": true,
     "removeComments": true,
@@ -49,7 +49,7 @@
       "@Hooks/*": ["src/apiHooks/*"]
     }
   },
-  "include": ["src/**/*"],
+  "include": ["src/**/*",],
   "exclude": [
     "otf",
     "ttf",

@@ -1,0 +1,30 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Renders Searchbar snapshot as expected 1`] = `
+<View
+  style={
+    Object {
+      "alignItems": "center",
+      "backgroundColor": "#f0f0f0",
+      "flexDirection": "row",
+      "justifyContent": "center",
+      "padding": 10,
+    }
+  }
+>
+  <TextInput
+    onChangeText={[Function]}
+    placeholder="Search stock by name or ticker symbol..."
+    style={
+      Object {
+        "flex": 1,
+        "fontFamily": "SchibstedGrotesk-Bold",
+        "fontWeight": "500",
+        "height": 40,
+        "letterSpacing": 1.5,
+      }
+    }
+    value=""
+  />
+</View>
+`;

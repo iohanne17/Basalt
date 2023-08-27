@@ -1,4 +1,4 @@
-import React, {useCallback, useState} from 'react';
+import React, {useCallback, useEffect, useState} from 'react';
 import {
   FlatList,
   ListRenderItem,
@@ -41,14 +41,37 @@ interface IStock {
   website: string;
 }
 
-type HomeScreenProps = NativeStackScreenProps<
+export type HomeScreenProps = NativeStackScreenProps<
   CoreRoutesParams,
   CoreRoutes.STOCKLIST
 >;
 
 export const Home = ({navigation: {navigate}}: HomeScreenProps) => {
-  const {isLoading, isFetching, data, isError, refetch, search} =
-    useStockList();
+  const [stocks, setData] = useState<IRenderItemProps[] | undefined>([]);
+  const {
+    isLoading,
+    isFetching,
+    data,
+    isError,
+    refetch,
+    search,
+    apiLazyResponse,
+    lazyHandle,
+  } = useStockList();
+
+  useEffect(() => {
+    if (lazyHandle && apiLazyResponse?.isSuccess) {
+      setData(apiLazyResponse?.data?.data);
+    } else {
+      setData(data);
+    }
+  }, [
+    isLoading,
+    lazyHandle,
+    apiLazyResponse?.isSuccess,
+    apiLazyResponse?.data?.data?.[0]?.symbol,
+    data?.[0]?.symbol,
+  ]);
 
   if (isLoading || isFetching) {
     return <Loading />;
@@ -119,7 +142,7 @@ export const Home = ({navigation: {navigate}}: HomeScreenProps) => {
       <SearchBar onSearch={search} onCancel={refetch} />
       <FlatList
         showsVerticalScrollIndicator={false}
-        data={data}
+        data={stocks}
         renderItem={renderItem}
         keyExtractor={(item, index) => `${item.symbol}${index}`}
         ItemSeparatorComponent={ListItemSeparator}

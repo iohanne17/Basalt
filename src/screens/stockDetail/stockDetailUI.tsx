@@ -17,7 +17,7 @@ import useStockListDetail from '@Hooks/stockDetail';
 import {Theme} from '@Theme/theme';
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
 
-type DetailScreenProps = NativeStackScreenProps<
+export type DetailScreenProps = NativeStackScreenProps<
   DetailRoutesParams,
   DetailRoutes.STOCKDETAIL
 >;
@@ -40,10 +40,8 @@ export interface StockInfo {
   volume: number;
 }
 
-export const StockDetail = ({navigation: {navigate}}: DetailScreenProps) => {
-  const {params} =
-    useRoute<RouteProp<DetailRoutesParams, DetailRoutes.STOCKDETAIL>>();
-  const {symbol, icon, name} = params;
+export const StockDetail = ({route}: DetailScreenProps) => {
+  const {symbol, icon, name} = route?.params;
 
   const {isLoading, isFetching, isError, data, refetch} =
     useStockListDetail(symbol);
