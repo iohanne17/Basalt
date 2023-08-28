@@ -1,12 +1,7 @@
-import React from 'react';
-import {
-  Text as BaseText,
-  Platform,
-  StyleSheet,
-  TextProps as RNTextProps,
-} from 'react-native';
+import React from 'react'
+import { Text as BaseText, Platform, StyleSheet, TextProps as RNTextProps } from 'react-native'
 
-import {colors} from '../../theme/colors';
+import { colors } from '../../theme/colors'
 
 export enum TextVariant {
   title = 'title',
@@ -18,7 +13,7 @@ export enum TextVariant {
   caption = 'caption',
   caption_2 = 'caption_2',
 }
-const textVariants = Object.keys(TextVariant);
+const textVariants = Object.keys(TextVariant)
 
 export enum TextColor {
   main = 'colorMain',
@@ -30,40 +25,31 @@ export enum TextColor {
 }
 
 export type TextProps = RNTextProps & {
-  color?: TextColor;
-  children?: any;
+  color?: TextColor
+  children?: any
 } & {
-  [str in TextVariant]?: boolean;
-};
+  [str in TextVariant]?: boolean
+}
 
-export const Text = React.forwardRef<
-  BaseText,
-  React.PropsWithChildren<TextProps>
->((props, ref): JSX.Element => {
-  const {children, color = TextColor.main, style, ...rest} = props;
+export const Text = React.forwardRef<BaseText, React.PropsWithChildren<TextProps>>((props, ref): JSX.Element => {
+  const { children, color = TextColor.main, style, ...rest } = props
 
   const variant: TextVariant =
-    (Object.keys(rest).find(
-      p => textVariants.includes(p) && props[p as TextVariant],
-    ) as TextVariant) || TextVariant.text_semibold;
+    (Object.keys(rest).find(p => textVariants.includes(p) && props[p as TextVariant]) as TextVariant) ||
+    TextVariant.text_semibold
 
-  const allStyles = StyleSheet.flatten([
-    TextStyles.base,
-    TextStyles[variant],
-    TextStyles[color],
-    style,
-  ]);
+  const allStyles = StyleSheet.flatten([TextStyles.base, TextStyles[variant], TextStyles[color], style])
 
   return (
     <BaseText ref={ref} style={allStyles} {...rest}>
       {children}
     </BaseText>
-  );
-});
+  )
+})
 
 Text.defaultProps = {
   color: TextColor.main,
-};
+}
 
 /* eslint-disable react-native/no-unused-styles */
 export const TextStyles = StyleSheet.create({
@@ -136,4 +122,4 @@ export const TextStyles = StyleSheet.create({
   [TextColor.fade]: {
     color: colors.inverseBlack60,
   },
-});
+})

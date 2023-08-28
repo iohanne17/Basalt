@@ -1,29 +1,22 @@
-import React, {Fragment, useLayoutEffect} from 'react';
-import {
-  Platform,
-  Pressable,
-  SafeAreaView,
-  StyleProp,
-  StyleSheet,
-  View,
-  ViewStyle,
-} from 'react-native';
-import {colors} from '../../theme/colors';
-import {useNavigation} from '@react-navigation/native';
-import {Theme} from '../../theme';
-import Ionicons from 'react-native-vector-icons/Ionicons';
-import {Text} from '../Text/Text';
+import React, { Fragment, useLayoutEffect } from 'react'
+import { Platform, Pressable, SafeAreaView, StyleProp, StyleSheet, View, ViewStyle } from 'react-native'
+import { colors } from '../../theme/colors'
+import { useNavigation } from '@react-navigation/native'
+import { Theme } from '../../theme'
+import Ionicons from 'react-native-vector-icons/Ionicons'
+import { Text } from '../Text/Text'
 
 interface Props {
-  innerStyle?: StyleProp<ViewStyle>;
-  headerTitle?: string;
-  goBack?: () => void;
-  children: React.ReactNode;
-  headerShown: boolean;
-  showArrow?: boolean;
-  alignHeaderTitle?: any;
-  safeAreaStyle?: StyleProp<ViewStyle>;
-  headerRight?: () => React.JSX.Element;
+  innerStyle?: StyleProp<ViewStyle>
+  headerTitle?: string
+  goBack?: () => void
+  children: React.ReactNode
+  headerShown: boolean
+  showLeftIcon?: boolean
+  alignHeaderTitle?: any
+  safeAreaStyle?: StyleProp<ViewStyle>
+  headerRight?: () => React.JSX.Element
+  showRightIcon?: boolean
 }
 
 export const HeaderLayout: React.FC<Props> = ({
@@ -31,22 +24,31 @@ export const HeaderLayout: React.FC<Props> = ({
   children,
   headerTitle,
   headerShown = false,
-  showArrow = true,
+  showLeftIcon = true,
   alignHeaderTitle = 'flex-start',
   safeAreaStyle,
   headerRight = null,
+  showRightIcon = true,
 }) => {
-  const navigation = useNavigation();
+  const navigation = useNavigation()
 
   const handleBack = () => {
     if (navigation?.canGoBack()) {
-      navigation?.goBack();
+      navigation?.goBack()
     }
-  };
+  }
 
   const headerStyle = {
     alignSelf: alignHeaderTitle,
-  };
+  }
+
+  const headerLeft = () => {
+    return (
+      <Pressable onPress={handleBack} style={{ paddingHorizontal: Theme.sizes.h1 }}>
+        <Ionicons name={'arrow-back'} size={Theme.sizes.icon3} color={colors.primary} />
+      </Pressable>
+    )
+  }
 
   useLayoutEffect(() => {
     navigation.setOptions({
@@ -63,31 +65,17 @@ export const HeaderLayout: React.FC<Props> = ({
           </Text>
         </View>
       ),
-      headerLeft: !showArrow
-        ? null
-        : () => {
-            return (
-              <Pressable
-                onPress={handleBack}
-                style={{paddingHorizontal: Theme.sizes.h1}}>
-                <Ionicons
-                  name={'arrow-back'}
-                  size={Theme.sizes.icon3}
-                  color={colors.primary}
-                />
-              </Pressable>
-            );
-          },
-      headerRight: headerRight,
-    });
-  }, [navigation]);
+      headerLeft: showLeftIcon ? headerLeft : null,
+      headerRight: showRightIcon ? headerRight : null,
+    })
+  }, [navigation, showLeftIcon, showRightIcon])
 
   return (
     <SafeAreaView style={[s.safeArea, safeAreaStyle]}>
       <View style={innerStyle}>{children}</View>
     </SafeAreaView>
-  );
-};
+  )
+}
 
 const s = StyleSheet.create({
   safeArea: {
@@ -103,4 +91,4 @@ const s = StyleSheet.create({
     flex: 1,
     paddingHorizontal: Theme.paddings.h16,
   },
-});
+})

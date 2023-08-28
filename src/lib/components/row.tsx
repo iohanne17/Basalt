@@ -1,14 +1,14 @@
-import * as React from 'react';
-import {Theme} from '../theme';
-import {Text} from './Text/Text';
-import {View, StyleSheet} from 'react-native';
+import * as React from 'react'
+import { Theme } from '../theme'
+import { Text } from './Text/Text'
+import { View, StyleSheet } from 'react-native'
 
 interface RowProps {
-  title: string;
-  value: string | number;
+  title: string
+  value: string | number
 }
 
-const Row = ({title, value}: RowProps) => {
+const Row = ({ title, value }: RowProps) => {
   return (
     <View style={s.row}>
       <Text text style={s.rowTitle}>
@@ -18,8 +18,8 @@ const Row = ({title, value}: RowProps) => {
         {value}
       </Text>
     </View>
-  );
-};
+  )
+}
 
 const s = StyleSheet.create({
   row: {
@@ -35,7 +35,7 @@ const s = StyleSheet.create({
     textTransform: 'uppercase',
     color: Theme.colors.dark.inverseWhite100,
   },
-});
+})
 
-Row.displayName = 'Row';
-export {Row};
+Row.displayName = 'Row'
+export { Row }

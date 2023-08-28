@@ -1,69 +1,48 @@
-import React, {useCallback, useEffect, useState} from 'react';
-import {
-  FlatList,
-  ListRenderItem,
-  Pressable,
-  StyleSheet,
-  View,
-} from 'react-native';
-import {
-  ErrorScreen,
-  HeaderLayout,
-  ListItemSeparator,
-  Loading,
-  Spacer,
-  Text,
-  TextColor,
-} from '@Components/index';
-import SearchBar from '@Components/searchBar';
-import {useStockList} from '@Hooks/stocklist';
-import {Theme} from '@Theme/theme';
-import {CoreRoutes, DetailRoutes} from 'src/navigation/routes';
-import {NativeStackScreenProps} from '@react-navigation/native-stack';
-import {CoreRoutesParams} from 'src/navigation/types';
+import React, { useCallback, useEffect, useState } from 'react'
+import { FlatList, ListRenderItem, Pressable, StyleSheet, View } from 'react-native'
+import { ErrorScreen, HeaderLayout, ListItemSeparator, Loading, Spacer, Text, TextColor } from '@Components/index'
+import SearchBar from '@Components/searchBar'
+import { useStockList } from '@Hooks/stocklist'
+import { Theme } from '@Theme/theme'
+import { CoreRoutes, DetailRoutes } from 'src/navigation/routes'
+import { NativeStackScreenProps } from '@react-navigation/native-stack'
+import { CoreRoutesParams } from 'src/navigation/types'
 
 export interface IRenderItemProps {
-  country: string | null;
-  has_eod: boolean;
-  has_intraday: boolean;
-  name: string;
-  stock_exchange: IStock;
-  symbol: string;
+  country: string | null
+  has_eod: boolean
+  has_intraday: boolean
+  name: string
+  stock_exchange: IStock
+  symbol: string
 }
 
 interface IStock {
-  acronym: string;
-  city: string;
-  country: string;
-  country_code: string;
-  mic: string;
-  name: string;
-  website: string;
+  acronym: string
+  city: string
+  country: string
+  country_code: string
+  mic: string
+  name: string
+  website: string
 }
 
-export type HomeScreenProps = NativeStackScreenProps<
-  CoreRoutesParams,
-  CoreRoutes.STOCKLIST
->;
+export type HomeScreenProps = NativeStackScreenProps<CoreRoutesParams, CoreRoutes.STOCKLIST>
 
-export const Home = ({navigation: {navigate}}: HomeScreenProps) => {
-  const [stocks, setData] = useState<IRenderItemProps[] | undefined>([]);
-  const {
-    isLoading,
-    isFetching,
-    data,
-    isError,
-    refetch,
-    search,
-    apiLazyResponse,
-    lazyHandle,
-  } = useStockList();
+enum UIViews {
+  empty = 'empty',
+  flatlist = 'flatlist',
+}
+
+export const Home = ({ navigation: { navigate } }: HomeScreenProps) => {
+  const [stocks, setData] = useState<IRenderItemProps[] | undefined>([])
+  const { isLoading, isFetching, data, isError, refetch, search, apiLazyResponse, lazyHandle } = useStockList()
 
   useEffect(() => {
     if (lazyHandle && apiLazyResponse?.isSuccess) {
-      setData(apiLazyResponse?.data?.data);
+      setData(apiLazyResponse?.data?.data)
     } else {
-      setData(data);
+      setData(data)
     }
   }, [
     isLoading,
@@ -72,10 +51,10 @@ export const Home = ({navigation: {navigate}}: HomeScreenProps) => {
     apiLazyResponse?.isSuccess,
     apiLazyResponse?.data?.data?.[0]?.symbol,
     data?.[0]?.symbol,
-  ]);
+  ])
 
   if (isLoading) {
-    return <Loading />;
+    return <Loading />
   }
 
   if (isError) {
@@ -86,22 +65,18 @@ export const Home = ({navigation: {navigate}}: HomeScreenProps) => {
         onPress={refetch}
         isLoading={isLoading}
       />
-    );
+    )
   }
 
   const onPress = (symbol: string, icon: string, name: string) => {
-    navigate(DetailRoutes.STOCKDETAIL, {symbol, icon, name});
-  };
+    navigate(DetailRoutes.STOCKDETAIL, { symbol, icon, name })
+  }
 
-  const renderItem: ListRenderItem<IRenderItemProps> = ({
-    item: {symbol, name},
-  }) => {
-    const icon = symbol.substring(0, 2);
+  const renderItem: ListRenderItem<IRenderItemProps> = ({ item: { symbol, name } }) => {
+    const icon = symbol.substring(0, 2)
 
     return (
-      <Pressable
-        style={s.renderItem}
-        onPress={() => onPress(symbol, icon, name)}>
+      <Pressable style={s.renderItem} onPress={() => onPress(symbol, icon, name)}>
         <View style={s.roundIcon}>
           <Text title_5 color={TextColor.white}>
             {icon}
@@ -118,37 +93,34 @@ export const Home = ({navigation: {navigate}}: HomeScreenProps) => {
           </Text>
         </View>
       </Pressable>
-    );
-  };
+    )
+  }
+
+  const views = {
+    [UIViews.flatlist]: (
+      <FlatList
+        showsVerticalScrollIndicator={false}
+        data={stocks}
+        renderItem={renderItem}
+        keyExtractor={(item, index) => `${item.symbol}${index}`}
+        ItemSeparatorComponent={ListItemSeparator}
+      />
+    ),
+    [UIViews.empty]: <ErrorScreen title={'Data not available'} message="Try another name" showButton={false} />,
+  }
+
+  const viewSelector = stocks?.length === 0 ? UIViews.empty : UIViews.flatlist
 
   return (
-    <HeaderLayout
-      headerTitle={'My WatchList'}
-      headerShown={true}
-      showArrow={false}
-      innerStyle={s.container}>
+    <HeaderLayout headerTitle={'My WatchList'} headerShown={true} showLeftIcon={false} innerStyle={s.container}>
       <Spacer height={20} />
       <SearchBar onSearch={search} onCancel={refetch} />
-      {stocks?.length === 0 ? (
-        <ErrorScreen
-          title={'Data not available'}
-          message="Try another name"
-          showButton={false}
-        />
-      ) : (
-        <FlatList
-          showsVerticalScrollIndicator={false}
-          data={stocks}
-          renderItem={renderItem}
-          keyExtractor={(item, index) => `${item.symbol}${index}`}
-          ItemSeparatorComponent={ListItemSeparator}
-        />
-      )}
+      {views[viewSelector]}
     </HeaderLayout>
-  );
-};
+  )
+}
 
-export default Home;
+export default Home
 
 const s = StyleSheet.create({
   container: {
@@ -181,4 +153,4 @@ const s = StyleSheet.create({
   error: {
     backgroundColor: 'red',
   },
-});
+})

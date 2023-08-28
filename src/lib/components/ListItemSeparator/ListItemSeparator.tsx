@@ -1,16 +1,14 @@
-import React from 'react';
-import {StyleSheet, View, ViewStyle} from 'react-native';
+import React from 'react'
+import { StyleSheet, View, ViewStyle } from 'react-native'
 
-import {colors} from '../../theme/colors';
-import {Theme} from '../../theme/theme';
+import { colors } from '../../theme/colors'
+import { Theme } from '../../theme/theme'
 
 interface Props {
-  style?: ViewStyle;
+  style?: ViewStyle
 }
 
-export const ListItemSeparator = ({style}: Props) => (
-  <View style={[s.separator, style]} />
-);
+export const ListItemSeparator = ({ style }: Props) => <View style={[s.separator, style]} />
 
 const s = StyleSheet.create({
   separator: {
@@ -20,4 +18,4 @@ const s = StyleSheet.create({
     backgroundColor: colors.inverseBlack20,
     marginHorizontal: Theme.paddings.h16,
   },
-});
+})

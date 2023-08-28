@@ -1,46 +1,36 @@
-import {Theme} from '@Theme/theme';
-import {useDebounce} from '@Utils/userUtils';
-import React, {FC, useEffect, useState} from 'react';
-import {
-  View,
-  TextInput,
-  StyleSheet,
-  TextInputProps,
-  TouchableOpacity,
-} from 'react-native';
-import MaterialIcon from 'react-native-vector-icons/MaterialIcons';
+import { Theme } from '@Theme/theme'
+import { useDebounce } from '@Utils/userUtils'
+import React, { FC, useEffect, useState } from 'react'
+import { View, TextInput, StyleSheet, TextInputProps, TouchableOpacity } from 'react-native'
+import MaterialIcon from 'react-native-vector-icons/MaterialIcons'
 
 interface SearchBarProps extends TextInputProps {
-  onSearch: (query: string) => void;
-  debounceTime?: number;
-  onCancel?: () => void;
+  onSearch: (query: string) => void
+  debounceTime?: number
+  onCancel?: () => void
 }
 
-export const SearchBar: FC<SearchBarProps> = ({
-  onSearch,
-  debounceTime = 800,
-  onCancel,
-  ...textInputProps
-}) => {
-  const [query, setQuery] = useState<string | undefined>(undefined);
-  const searchInput = useDebounce(query, 1000);
+export const SearchBar: FC<SearchBarProps> = ({ onSearch, debounceTime = 800, onCancel, ...textInputProps }) => {
+  const [query, setQuery] = useState<string | undefined>(undefined)
+  const searchInput = useDebounce(query, 1000)
 
   useEffect(() => {
     if (searchInput && searchInput.length > 0) {
-      onSearch(searchInput);
-    } else if (searchInput && searchInput.length === 0) {
-      onCancel?.();
+      onSearch(searchInput)
     }
-  }, [searchInput]);
+  }, [searchInput])
 
   const onPressCancel = () => {
-    handleTextChange?.('');
-    onCancel?.();
-  };
+    handleTextChange?.('')
+    onCancel?.()
+  }
 
   const handleTextChange = (text: string) => {
-    setQuery(text);
-  };
+    setQuery(text)
+    if (text === '') {
+      onCancel?.()
+    }
+  }
 
   return (
     <View style={styles.container}>
@@ -49,23 +39,19 @@ export const SearchBar: FC<SearchBarProps> = ({
         value={query}
         style={styles.input}
         onChangeText={val => {
-          setQuery(val);
-          handleTextChange(val);
+          setQuery(val)
+          handleTextChange(val)
         }}
         {...textInputProps}
       />
       {query && query?.length > 0 && (
         <TouchableOpacity onPress={onPressCancel}>
-          <MaterialIcon
-            name="cancel"
-            color={Theme.colors.light.primary}
-            size={Theme.sizes.icon3}
-          />
+          <MaterialIcon name="cancel" color={Theme.colors.light.primary} size={Theme.sizes.icon3} />
         </TouchableOpacity>
       )}
     </View>
-  );
-};
+  )
+}
 
 const styles = StyleSheet.create({
   container: {
@@ -82,6 +68,6 @@ const styles = StyleSheet.create({
     fontFamily: 'SchibstedGrotesk-Bold',
     flex: 1,
   },
-});
+})
 
-export default SearchBar;
+export default SearchBar

@@ -12,4 +12,4 @@ export enum NetworkRoutes {
   LOADING = 'LOADING',
 }
 
-export type AllRoutes = CoreRoutes | DetailRoutes | NetworkRoutes;
+export type AllRoutes = CoreRoutes | DetailRoutes | NetworkRoutes

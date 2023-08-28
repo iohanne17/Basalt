@@ -1,4 +1,4 @@
-import React from 'react';
+import React from 'react'
 import {
   ActivityIndicator,
   Pressable,
@@ -8,13 +8,13 @@ import {
   TouchableOpacityProps,
   View,
   ViewStyle,
-} from 'react-native';
-import type {ComponentProps} from 'react';
+} from 'react-native'
+import type { ComponentProps } from 'react'
 
-import {colors} from '../../theme/colors';
-import {Theme} from '../../theme/theme';
-import {Text} from '../Text/Text';
-import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
+import { colors } from '../../theme/colors'
+import { Theme } from '../../theme/theme'
+import { Text } from '../Text/Text'
+import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons'
 
 export enum MB_SCHEME {
   small = 'small',
@@ -28,21 +28,21 @@ export enum BUTTON_SIZE {
   large = 'large',
 }
 
-type PropType = ComponentProps<typeof MaterialCommunityIcons>['name'];
+type PropType = ComponentProps<typeof MaterialCommunityIcons>['name']
 
 export interface MainButtonProps extends TouchableOpacityProps {
-  disabled?: boolean;
-  loading?: boolean;
-  title?: string;
-  scheme?: MB_SCHEME;
-  sizeScheme?: BUTTON_SIZE;
-  onPress: () => any;
-  style?: StyleProp<ViewStyle>;
-  type: 'icon' | 'text';
-  iconName?: PropType;
-  iconSize?: number;
-  iconColor?: string;
-  textStyle?: StyleProp<TextStyle>;
+  disabled?: boolean
+  loading?: boolean
+  title?: string
+  scheme?: MB_SCHEME
+  sizeScheme?: BUTTON_SIZE
+  onPress: () => any
+  style?: StyleProp<ViewStyle>
+  type: 'icon' | 'text'
+  iconName?: PropType
+  iconSize?: number
+  iconColor?: string
+  textStyle?: StyleProp<TextStyle>
 }
 export const Button = ({
   disabled,
@@ -65,12 +65,8 @@ export const Button = ({
         {title}
       </Text>
     ) : (
-      <MaterialCommunityIcons
-        size={iconSize}
-        name={iconName}
-        color={iconColor}
-      />
-    );
+      <MaterialCommunityIcons size={iconSize} name={iconName} color={iconColor} />
+    )
 
   const content = loading ? (
     <View style={s.loaderWrapper}>
@@ -78,22 +74,18 @@ export const Button = ({
     </View>
   ) : (
     contentType
-  );
+  )
 
   return (
     <Pressable
       onPress={onPress}
-      style={({pressed}) => [
-        s.main,
-        {opacity: pressed ? 0.5 : 1},
-        buttonSizeStyle[sizeScheme],
-        style,
-      ]}
-      {...touchableProps}>
+      style={({ pressed }) => [s.main, { opacity: pressed ? 0.5 : 1 }, buttonSizeStyle[sizeScheme], style]}
+      {...touchableProps}
+    >
       {content}
     </Pressable>
-  );
-};
+  )
+}
 
 const s = StyleSheet.create({
   main: {
@@ -109,7 +101,7 @@ const s = StyleSheet.create({
   text: {
     color: Theme.colors.light.inverseWhite100,
   },
-});
+})
 
 const buttonSizeStyle = {
   [BUTTON_SIZE.small]: {
@@ -124,7 +116,7 @@ const buttonSizeStyle = {
     paddingVertical: Theme.sizes.v5,
     paddingHorizontal: Theme.sizes.h5,
   },
-};
+}
 
 const buttonStyle = {
   [MB_SCHEME.medium]: {
@@ -135,4 +127,4 @@ const buttonStyle = {
       borderRadius: Theme.sizes.r4,
     },
   },
-};
+}

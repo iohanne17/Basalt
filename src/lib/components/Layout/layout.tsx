@@ -1,7 +1,7 @@
-import React, { Fragment } from "react"
-import { StyleProp, ViewStyle, StyleSheet } from "react-native"
-import { Edge, SafeAreaView } from "react-native-safe-area-context"
-import { Theme } from "../../theme"
+import React, { Fragment } from 'react'
+import { StyleProp, ViewStyle, StyleSheet } from 'react-native'
+import { Edge, SafeAreaView } from 'react-native-safe-area-context'
+import { Theme } from '../../theme'
 
 interface Props {
   style?: StyleProp<ViewStyle>
