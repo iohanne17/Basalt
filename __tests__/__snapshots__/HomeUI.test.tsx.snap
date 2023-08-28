@@ -11,7 +11,7 @@ exports[`Home Component matches snapshot 1`] = `
       "paddingHorizontal": 16,
     }
   }
-  showArrow={false}
+  showLeftIcon={false}
 >
   <Spacer
     height={20}
