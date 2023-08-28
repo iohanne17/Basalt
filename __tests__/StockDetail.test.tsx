@@ -1,13 +1,10 @@
-import React from 'react';
-import {render} from '@testing-library/react-native';
-import {
-  StockDetail,
-  DetailScreenProps,
-} from '../src/screens/stockDetail/stockDetailUI';
-import {Provider} from 'react-redux';
-import {store} from '../src/config/store';
+import React from 'react'
+import { render } from '@testing-library/react-native'
+import { StockDetail, DetailScreenProps } from '../src/screens/stockDetail/stockDetailUI'
+import { Provider } from 'react-redux'
+import { store } from '../src/config/store'
 
-const useStockListDetail = jest.fn();
+const useStockListDetail = jest.fn()
 
 const sample = {
   adj_close: 900,
@@ -24,16 +21,22 @@ const sample = {
   split_factor: 678,
   symbol: 'AAPL',
   volume: 4,
-};
+}
 
 // Mock the useStockListDetail hook
 jest.mock('@Hooks/stockDetail', () => ({
   __esModule: true,
-  default: () => () => {
-    data: sample;
-  },
-  useStockListDetail: jest.fn(),
-}));
+  default: jest.fn(),
+  useStockListDetail: jest.fn(() => ({
+    isLoading: false,
+    isFetching: false,
+    isError: false,
+    data: {
+      data: [sample, sample],
+    },
+    refetch: jest.fn(),
+  })),
+}))
 
 jest.mock('@Components/index', () => ({
   ErrorScreen: 'ErrorScreen',
@@ -42,10 +45,10 @@ jest.mock('@Components/index', () => ({
   Spacer: 'Spacer',
   Text: 'Text',
   TextColor: 'TextColor',
-}));
+}))
 
 describe('Detail Component', () => {
-  let navigation;
+  let navigation
   beforeEach(() => {
     navigation = {
       navigation: {
@@ -58,10 +61,10 @@ describe('Detail Component', () => {
           name: 'Aplle Inc',
         },
       },
-    };
+    }
 
-    useStockListDetail.mockClear();
-  });
+    useStockListDetail.mockClear()
+  })
 
   useStockListDetail.mockReturnValue({
     isLoading: false,
@@ -71,14 +74,14 @@ describe('Detail Component', () => {
       data: [sample, sample],
     },
     refetch: jest.fn(),
-  });
+  })
 
   it('matches stock detail snapshot', () => {
-    const {toJSON} = render(
+    const { toJSON } = render(
       <Provider store={store}>
         <StockDetail {...(navigation as DetailScreenProps)} />
       </Provider>,
-    );
-    expect(toJSON()).toMatchSnapshot();
-  });
-});
+    )
+    expect(toJSON()).toMatchSnapshot()
+  })
+})

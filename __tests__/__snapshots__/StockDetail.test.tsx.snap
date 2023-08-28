@@ -2,6 +2,7 @@
 
 exports[`Detail Component matches stock detail snapshot 1`] = `
 <HeaderLayout
+  headerRight={[Function]}
   headerShown={true}
   headerTitle="AAPL"
   innerStyle={
@@ -15,10 +16,8 @@ exports[`Detail Component matches stock detail snapshot 1`] = `
       "backgroundColor": "#FAF9F6",
     }
   }
+  showRightIcon={false}
 >
-  <Spacer
-    height={20}
-  />
   <View
     style={
       Object {
@@ -59,32 +58,15 @@ exports[`Detail Component matches stock detail snapshot 1`] = `
     </Text>
   </View>
   <Spacer
-    height={20}
+    height={10}
   />
-  <RCTScrollView
-    contentContainerStyle={
-      Object {
-        "backgroundColor": "#FAF9F6",
-        "borderTopLeftRadius": 25,
-        "borderTopRightRadius": 25,
-        "bottom": 0,
-        "flex": 1,
-        "left": 0,
-        "paddingHorizontal": 16,
-        "paddingVertical": 16,
-        "position": "absolute",
-        "right": 0,
-        "top": 5,
-      }
-    }
-  >
-    <View>
-      <ErrorScreen
-        message="Try again"
-        showButton={false}
-        title="Unable to get data"
-      />
-    </View>
-  </RCTScrollView>
+  <Spacer
+    height={90}
+  />
+  <ErrorScreen
+    message="Try again"
+    showButton={false}
+    title="Unable to get data"
+  />
 </HeaderLayout>
 `;
