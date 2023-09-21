@@ -1,4 +1,4 @@
-import React, { useCallback, useEffect, useState } from 'react'
+import React, { ReactNode } from 'react'
 import { FlatList, ListRenderItem, Pressable, StyleSheet, View } from 'react-native'
 import { ErrorScreen, HeaderLayout, ListItemSeparator, Loading, Spacer, Text, TextColor } from '@Components/index'
 import SearchBar from '@Components/searchBar'
@@ -7,6 +7,8 @@ import { Theme } from '@Theme/theme'
 import { CoreRoutes, DetailRoutes } from 'src/navigation/routes'
 import { NativeStackScreenProps } from '@react-navigation/native-stack'
 import { CoreRoutesParams } from 'src/navigation/types'
+import withLoader, { ExtraInfoType } from 'src/hoc/withLoadingAndError'
+import { TWithModal, withModal } from 'src/hoc'
 
 export interface IRenderItemProps {
   country: string | null
@@ -27,47 +29,36 @@ interface IStock {
   website: string
 }
 
-export type HomeScreenProps = NativeStackScreenProps<CoreRoutesParams, CoreRoutes.STOCKLIST>
+type TCombo = ExtraInfoType & TWithModal
+export type HomeScreenProps = NativeStackScreenProps<CoreRoutesParams, CoreRoutes.STOCKLIST> & TCombo
+
+// interface HomeScreenProps extends NativeStackScreenProps<CoreRoutesParams, CoreRoutes.STOCKLIST>, ExtraInfoType {}
 
 enum UIViews {
   empty = 'empty',
   flatlist = 'flatlist',
 }
 
-export const Home = ({ navigation: { navigate } }: HomeScreenProps) => {
-  const [stocks, setData] = useState<IRenderItemProps[] | undefined>([])
-  const { isLoading, isFetching, data, isError, refetch, search, apiLazyResponse, lazyHandle } = useStockList()
-
-  useEffect(() => {
-    if (lazyHandle && apiLazyResponse?.isSuccess) {
-      setData(apiLazyResponse?.data?.data)
-    } else {
-      setData(data)
-    }
-  }, [
-    isLoading,
-    lazyHandle,
-    isFetching,
-    apiLazyResponse?.isSuccess,
-    apiLazyResponse?.data?.data?.[0]?.symbol,
-    data?.[0]?.symbol,
-  ])
-
-  if (isLoading) {
-    return <Loading />
+const ViewsM = ({ closeModal }: TWithModal) => {
+  const onPress = () => {
+    closeModal()
   }
 
-  if (isError) {
-    return (
-      <ErrorScreen
-        title="Data Error"
-        message="Error fetching data... Try again later"
-        onPress={refetch}
-        isLoading={isLoading}
-      />
-    )
-  }
+  return (
+    <View style={{ flex: 1 }}>
+      <Text title_2>i am testing modal</Text>
+      <Text title_4>This is a neat trick</Text>
+      <Text title_5>Upgrading my RN skills</Text>
+      <Pressable style={s.button} onPress={onPress}>
+        <Text text_semibold>{'close Modal'}</Text>
+      </Pressable>
+    </View>
+  )
+}
 
+const HocView = withModal(ViewsM)
+
+const Home_ = ({ navigation: { navigate }, data, search, refetch, openModal, closeModal }: HomeScreenProps) => {
   const onPress = (symbol: string, icon: string, name: string) => {
     navigate(DetailRoutes.STOCKDETAIL, { symbol, icon, name })
   }
@@ -100,7 +91,7 @@ export const Home = ({ navigation: { navigate } }: HomeScreenProps) => {
     [UIViews.flatlist]: (
       <FlatList
         showsVerticalScrollIndicator={false}
-        data={stocks}
+        data={data}
         renderItem={renderItem}
         keyExtractor={(item, index) => `${item.symbol}${index}`}
         ItemSeparatorComponent={ListItemSeparator}
@@ -109,20 +100,35 @@ export const Home = ({ navigation: { navigate } }: HomeScreenProps) => {
     [UIViews.empty]: <ErrorScreen title={'Data not available'} message="Try another name" showButton={false} />,
   }
 
-  const viewSelector = stocks?.length === 0 ? UIViews.empty : UIViews.flatlist
+  const onPressIn = () => {
+    openModal(<HocView />)
+  }
+
+  const viewSelector = data?.length === 0 ? UIViews.empty : UIViews.flatlist
 
   return (
     <HeaderLayout headerTitle={'My WatchList'} headerShown={true} showLeftIcon={false} innerStyle={s.container}>
       <Spacer height={20} />
       <SearchBar onSearch={search} onCancel={refetch} />
       {views[viewSelector]}
+      <Pressable style={{ borderRadius: 25 }} onPress={onPressIn}>
+        <Text text_semibold>{'Open Modal'}</Text>
+      </Pressable>
     </HeaderLayout>
   )
 }
 
-export default Home
+export const Home = withModal(withLoader(Home_, useStockList))
+export default withModal(withLoader(Home_, useStockList))
 
 const s = StyleSheet.create({
+  button: {
+    height: 100,
+    backgroundColor: 'teal',
+    alignSelf: 'center',
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
   container: {
     flex: 1,
     backgroundColor: '#fff',
