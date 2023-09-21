@@ -46,7 +46,8 @@
       "@Libs/*": ["src/lib/*"],
       "@Features/*": ["src/features/*"],
       "@Config/*": ["src/config/*"],
-      "@Hooks/*": ["src/apiHooks/*"]
+      "@Hooks/*": ["src/apiHooks/*"],
+      "@Hoc/*": ["src/hoc/*"]
     }
   },
   "include": ["src/**/*",],

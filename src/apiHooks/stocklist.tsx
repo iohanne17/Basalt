@@ -1,31 +1,27 @@
-import {
-  useFetchStockListQuery,
-  useLazySearchStockListQuery,
-} from '@Features/stockList/stockList-api-slice';
-import {useState} from 'react';
+import { useFetchStockListQuery, useLazySearchStockListQuery } from '@Features/stockList/stockList-api-slice'
+import { useState } from 'react'
 
 export const useStockList = () => {
-  const [showLazyData, setShowLazyData] = useState(false);
-  const {isLoading, isFetching, isError, data, refetch} =
-    useFetchStockListQuery({});
-  const {searchTrigger, apiResponse} = useLazyStockList();
+  const [showLazyData, setShowLazyData] = useState(false)
+  const { isLoading, isFetching, isError, data, refetch } = useFetchStockListQuery({})
+  const { searchTrigger, apiResponse } = useLazyStockList()
 
   const findStock = async (val: string) => {
     try {
-      await searchTrigger(val);
+      await searchTrigger(val)
       if (apiResponse.isSuccess) {
-        setShowLazyData(true);
+        setShowLazyData(true)
       }
     } catch (error) {
-      setShowLazyData(false);
-      throw new Error('Failed to fetch');
+      setShowLazyData(false)
+      throw new Error('Failed to fetch')
     }
-  };
+  }
 
   const refetchData = () => {
-    setShowLazyData(false);
-    refetch();
-  };
+    setShowLazyData(false)
+    refetch()
+  }
 
   return {
     isFetching: isFetching,
@@ -36,11 +32,11 @@ export const useStockList = () => {
     search: findStock,
     apiLazyResponse: apiResponse,
     lazyHandle: showLazyData,
-  };
-};
+  }
+}
 
 export const useLazyStockList = () => {
-  const [searchTrigger, apiResponse] = useLazySearchStockListQuery();
+  const [searchTrigger, apiResponse] = useLazySearchStockListQuery()
 
   return {
     isFetching: apiResponse.isFetching,
@@ -48,5 +44,7 @@ export const useLazyStockList = () => {
     data: apiResponse.data,
     searchTrigger,
     apiResponse,
-  };
-};
+  }
+}
+
+export type TUseStockList = typeof useStockList

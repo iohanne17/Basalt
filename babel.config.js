@@ -16,6 +16,7 @@ module.exports = {
           "@Utils": "./src/lib/utils",
           "@Assets": "./assets",
           "@Hooks": "./src/apiHooks",
+          "@Hoc/*": ["src/hoc"]
         },
         extensions: [".ios.js", ".android.js", ".js", ".ts", ".tsx", ".json"],
       },
